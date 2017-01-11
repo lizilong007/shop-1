@@ -139,11 +139,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <h2 id="accountInfoHeading">Account Information</h2>
                 <div class="row input-row">
                   <shop-input>
-                    <input type="email" id="accountEmail" name="accountEmail"
-                        placeholder="Email" autofocus required
-                        aria-labelledby="accountEmailLabel accountInfoHeading">
-                    <shop-md-decorator error-message="Invalid Email" aria-hidden="true">
-                      <label id="accountEmailLabel">Email</label>
+                    <input type="text" id="accountName" name="accountName"
+                        placeholder="张先生" autofocus required
+                        aria-labelledby="accountNameLabel accountInfoHeading">
+                    <shop-md-decorator error-message="无效的姓名" aria-hidden="true">
+                      <label id="accountEmailLabel">姓名</label>
                       <shop-underline></shop-underline>
                     </shop-md-decorator>
                   </shop-input>
@@ -151,26 +151,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <div class="row input-row">
                   <shop-input>
                     <input type="tel" id="accountPhone" name="accountPhone" pattern="\d{10,}"
-                        placeholder="Phone Number" required
+                        placeholder="手机号码" required
                         aria-labelledby="accountPhoneLabel accountInfoHeading">
-                    <shop-md-decorator error-message="Invalid Phone Number" aria-hidden="true">
-                      <label id="accountPhoneLabel">Phone Number</label>
+                    <shop-md-decorator error-message="无效的手机号码" aria-hidden="true">
+                      <label id="accountPhoneLabel">手机号码</label>
                       <shop-underline></shop-underline>
                     </shop-md-decorator>
                   </shop-input>
                 </div>
-                <h2 id="shipAddressHeading">Shipping Address</h2>
                 <div class="row input-row">
                   <shop-input>
                     <input type="text" id="shipAddress" name="shipAddress" pattern=".{5,}"
-                        placeholder="Address" required
+                        placeholder="收货地址" required
                         aria-labelledby="shipAddressLabel shipAddressHeading">
-                    <shop-md-decorator error-message="Invalid Address" aria-hidden="true">
-                      <label id="shipAddressLabel">Address</label>
+                    <shop-md-decorator error-message="无效的收货地址" aria-hidden="true">
+                      <label id="shipAddressLabel">收货地址</label>
                       <shop-underline></shop-underline>
                     </shop-md-decorator>
                   </shop-input>
                 </div>
+                <!--
                 <div class="row input-row">
                   <shop-input>
                     <input type="text" id="shipCity" name="shipCity" pattern=".{2,}"
@@ -286,9 +286,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     </shop-select>
                   </div>
                 </div>
+                -->
               </section>
 
               <section>
+                <!--
                 <h2>Payment Method</h2>
                 <div class="row input-row">
                   <shop-input>
@@ -365,8 +367,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     </shop-md-decorator>
                   </shop-input>
                 </div>
+                -->
                 <h2>Order Summary</h2>
                 <template is="dom-repeat" items="[[cart]]" as="entry">
+                  <input type="hidden" name="items[]" value="[[entry.item.title]]">
+                  <input type="hidden" name="quantity[]" value="[[entry.quantity]]">
                   <div class="row order-summary-row">
                     <div class="flex">[[entry.item.title]]</div>
                     <div>[[_getEntryTotal(entry)]]</div>
@@ -501,16 +506,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           this.$.checkoutForm.fire('iron-form-presubmit', null, { bubbles: false });
 
-          this.debounce('_submitForm', function() {
-            this.$.checkoutForm.fire('iron-form-response', {
-              response: {
-                success: 1,
-                successMessage: 'Demo checkout process complete.'
-              }
-            }, { bubbles: false });
-          }, 1000);
+          // this.debounce('_submitForm', function() {
+          //   this.$.checkoutForm.fire('iron-form-response', {
+          //     response: {
+          //       success: 1,
+          //       successMessage: 'Demo checkout process complete.'
+          //     }
+          //   }, { bubbles: false });
+          // }, 1000);
 
-          // this.$.checkoutForm.submit();
+          this.$.checkoutForm.submit();
         }
       },
 
@@ -613,6 +618,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           body.cartItemsId.push(cartItem.item.name);
           body.cartItemsQuantity.push(cartItem.quantity);
         });
+        console.log(body);
       },
 
       /**
@@ -628,7 +634,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if (response.success) {
           this._pushState('success');
           this._reset();
-          this.fire('clear-cart');
+          // this.fire('clear-cart');
         } else {
           this._pushState('error');
         }

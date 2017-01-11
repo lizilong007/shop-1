@@ -111,7 +111,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           return;
         }
         this._getResource({
-          url: '/data/' + category.name + '.json',
+          url: 'http://partner.daoapp.io/shop/data/product-list?category=' + category.name,
           onLoad: function(e) {
             this.set('category.items', JSON.parse(e.target.responseText));
           },
@@ -122,6 +122,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _getResource: function(rq, attempts) {
+        console.log(rq, attempts);
         var xhr = new XMLHttpRequest();
         xhr.addEventListener('load', rq.onLoad.bind(this));
         xhr.addEventListener('error', function(e) {
